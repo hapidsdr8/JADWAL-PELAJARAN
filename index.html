@@ -1,1 +1,198 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Pelajaran Sekolah</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; padding: 20px 15px; }
+        .container { width: 100%; max-width: 480px; background: #1e293b; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); border: 1px solid #334155; position: relative; }
+        .header { background: linear-gradient(135deg, #0284c7, #0369a1); padding: 25px 20px 10px 20px; position: relative; text-align: center; }
+        .header h1 { font-size: 1.5rem; letter-spacing: 1px; color: #ffffff; margin-bottom: 5px; text-transform: uppercase; }
+        .datetime-box { font-size: 0.9rem; color: #e0f2fe; margin-bottom: 12px; }
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.85); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .status-yellow { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
+        .status-green  { background-color: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .status-white  { background-color: #f8fafc; box-shadow: 0 0 8px #f8fafc; }
+        .status-red    { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
+        .wave-svg { display: block; width: 100%; height: 40px; }
+        .content { padding: 20px; }
+        .section-box { background: #0f172a; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid #38bdf8; }
+        .section-title { font-size: 0.85rem; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 700; }
+        .summary-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+        .summary-item { background: #1e293b; color: #e2e8f0; padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; border: 1px solid #334155; font-weight: 600; }
+        .timeline { display: flex; flex-direction: column; gap: 10px; }
+        .timeline-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 10px; border: 1px solid #1e293b; transition: all 0.2s ease; }
+        .timeline-item.active { border-color: #38bdf8; background: #16243d; }
+        .time-text { font-size: 0.85rem; color: #38bdf8; font-weight: 600; width: 105px; flex-shrink: 0; }
+        .subject-text { font-size: 0.9rem; color: #f1f5f9; flex-grow: 1; text-align: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Jadwal Pelajaran</h1>
+        <div class="datetime-box" id="datetime-display">---, -- -------- ---- | --:--:-- WIB</div>
+        <div class="status-badge">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Memuat status...</span>
+        </div>
+    </div>
+    <svg class="wave-svg" viewBox="0 0 500 150" preserveAspectRatio="none">
+        <path d="M0.00,49.98 C150.00,150.00 349.20,-49.98 500.00,49.98 L500.00,0.00 L0.00,0.00 Z" fill="#0369a1"></path>
+    </svg>
+
+    <div class="content">
+        <div class="section-box">
+            <div class="section-title" id="summary-title">MATA PELAJARAN HARI INI</div>
+            <ul class="summary-list" id="summary-list"></ul>
+        </div>
+
+        <div class="section-title" style="margin-bottom: 10px;">RINCIAN WAKTU</div>
+        <div class="timeline" id="timeline-list"></div>
+    </div>
+</div>
+
+<script>
+    const scheduleData = {
+        1: {
+            summary: ["MTK", "PAI", "IPA"],
+            timeline: [
+                { start: "06:30", end: "07:20", label: "Persiapan KBM", type: "prep" },
+                { start: "07:20", end: "09:40", label: "Mapel ke 1 MTK", type: "class" },
+                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
+                { start: "10:00", end: "11:20", label: "Mapel ke 2 PAI", type: "class" },
+                { start: "11:20", end: "12:00", label: "Mapel ke 3 IPA", type: "class" },
+                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
+                { start: "12:40", end: "14:00", label: "Mapel ke 3 (Lanjutan) IPA", type: "class" },
+                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
+            ]
+        },
+        2: {
+            summary: ["B. Inggris", "PPKn", "IPS"],
+            timeline: [
+                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
+                { start: "07:40", end: "09:00", label: "Mapel ke 1 B. Inggris", type: "class" },
+                { start: "09:00", end: "09:40", label: "Mapel ke 2 PPKn", type: "class" },
+                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
+                { start: "10:00", end: "10:40", label: "Mapel ke 3 PPKn", type: "class" },
+                { start: "10:40", end: "12:00", label: "Mapel ke 4 IPS", type: "class" },
+                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
+                { start: "12:40", end: "14:00", label: "Mapel ke 4 (Lanjutan) IPS", type: "class" },
+                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
+            ]
+        },
+        3: {
+            summary: ["PJOK", "IPA", "B. Indo"],
+            timeline: [
+                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
+                { start: "07:40", end: "09:00", label: "Mapel ke 1 PJOK", type: "class" },
+                { start: "09:00", end: "09:40", label: "Mapel ke 2 IPA", type: "class" },
+                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
+                { start: "10:00", end: "11:20", label: "Mapel ke 3 IPA", type: "class" },
+                { start: "11:20", end: "12:00", label: "Mapel ke 4 B. Indo", type: "class" },
+                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
+                { start: "12:40", end: "14:00", label: "Mapel ke 4 (Lanjutan) B. Indo", type: "class" },
+                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
+            ]
+        },
+        4: {
+            summary: ["Prakarya", "IPS"],
+            timeline: [
+                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
+                { start: "07:40", end: "09:00", label: "Mapel ke 1 Prakarya", type: "class" },
+                { start: "09:00", end: "09:40", label: "Mapel ke 2 IPS", type: "class" },
+                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
+                { start: "10:00", end: "12:00", label: "Mapel ke 3 IPS", type: "class" },
+                { start: "12:00", end: null, label: "Pulang / Selesai", type: "off" }
+            ]
+        },
+        5: {
+            summary: ["TIK", "B. Sunda"],
+            timeline: [
+                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
+                { start: "07:40", end: "09:00", label: "Mapel ke 1 TIK", type: "class" },
+                { start: "09:00", end: "09:40", label: "Mapel ke 2 B. Sunda", type: "class" },
+                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
+                { start: "10:00", end: "10:40", label: "Mapel ke 3 B. Sunda", type: "class" },
+                { start: "10:40", end: null, label: "Pulang / Selesai", type: "off" }
+            ]
+        }
+    };
+
+    function timeToMinutes(t) {
+        if (!t) return 0;
+        const [h, m] = t.split(":").map(Number);
+        return h * 60 + m;
+    }
+
+    function updateDashboard() {
+        const now = new Date();
+        const dayIdx = now.getDay();
+        const currentMins = now.getHours() * 60 + now.getMinutes();
+
+        const daysName = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const monthsName = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        document.getElementById("datetime-display").innerText = `${daysName[dayIdx]}, ${now.getDate()} ${monthsName[now.getMonth()]} ${now.getFullYear()} | ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} WIB`;
+
+        if (dayIdx === 0 || dayIdx === 6 || !scheduleData[dayIdx]) {
+            document.getElementById("status-dot").className = "status-dot status-red";
+            document.getElementById("status-text").innerText = "Libur / Off";
+            document.getElementById("summary-title").innerText = "MATA PELAJARAN HARI INI";
+            document.getElementById("summary-list").innerHTML = "<li class='summary-item'>Tidak Ada Kegiatan KBM</li>";
+            document.getElementById("timeline-list").innerHTML = "";
+            return;
+        }
+
+        const today = scheduleData[dayIdx];
+        document.getElementById("summary-title").innerText = `MATA PELAJARAN HARI INI (${daysName[dayIdx].toUpperCase()})`;
+        document.getElementById("summary-list").innerHTML = today.summary.map(item => `<li class="summary-item">${item}</li>`).join("");
+
+        let activeIndex = -1;
+        let type = "off";
+
+        today.timeline.forEach((item, i) => {
+            const startMins = timeToMinutes(item.start);
+            const endMins = timeToMinutes(item.end);
+
+            if (item.type === "off") {
+                if (currentMins >= startMins) {
+                    type = "off";
+                    activeIndex = i;
+                }
+            } else if (currentMins >= startMins && currentMins < endMins) {
+                type = item.type;
+                activeIndex = i;
+            }
+        });
+
+        const statusMap = {
+            prep: ["status-yellow", "Persiapan KBM"],
+            class: ["status-green", "Aktif Belajar"],
+            break: ["status-white", "Jam Istirahat"],
+            off: ["status-red", "Pulang / Selesai"]
+        };
+
+        const [cls, txt] = statusMap[type] || statusMap["off"];
+        document.getElementById("status-dot").className = `status-dot ${cls}`;
+        document.getElementById("status-text").innerText = txt;
+
+        document.getElementById("timeline-list").innerHTML = today.timeline.map((item, i) => `
+            <div class="timeline-item ${i === activeIndex ? "active" : ""}">
+                <span class="time-text">${item.end ? item.start + " - " + item.end : item.start}</span>
+                <span class="subject-text">${item.label}</span>
+            </div>
+        `).join("");
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 1000);
+</script>
+
+</body>
+</html>
