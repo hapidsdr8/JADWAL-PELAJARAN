@@ -115,7 +115,6 @@
         </div>
     </div>
 </div>
-
 <script>
     const scheduleData = {
         1: {
@@ -223,9 +222,13 @@
     function toggleMusic() {
         const audio = document.getElementById("bg-music");
         const btn = document.getElementById("music-btn");
+        
         if (audio.paused) {
-            audio.play();
-            btn.innerHTML = "⏸️ Pause Musik Spesial";
+            audio.play().then(() => {
+                btn.innerHTML = "⏸️ Pause Musik Spesial";
+            }).catch(err => {
+                console.log("Autoplay dicegah oleh browser:", err);
+            });
         } else {
             audio.pause();
             btn.innerHTML = "🎵 Play Musik Spesial";
@@ -240,14 +243,14 @@
 
     function checkTheme() {
         const now = new Date();
-        const month = now.getMonth(); // 0 = Jan, 7 = Agt
+        const month = now.getMonth();
         const date = now.getDate();
         
         const audio = document.getElementById("bg-music");
         const audioSource = document.getElementById("music-source");
         const banner = document.getElementById("event-banner");
+        const btn = document.getElementById("music-btn");
 
-        // 17 Agustus (HUT RI)
         if (month === 7 && date === 17) {
             if (currentEvent !== "merdeka") {
                 currentEvent = "merdeka";
@@ -255,28 +258,27 @@
                 banner.innerText = "🇮🇩 Selamat HUT RI Ke-81! 🇮🇩";
                 audioSource.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/Indonesia_Raya_instrumental.ogg";
                 audio.load();
+                btn.innerHTML = "🎵 Play Musik Spesial";
             }
         } 
-        // 28 Januari (Ulang Tahun)
         else if (month === 0 && date === 28) {
             if (currentEvent !== "birthday") {
                 currentEvent = "birthday";
                 document.body.className = 'theme-birthday';
                 banner.innerText = "🎂 Happy Birthday Dee! 🎉";
-                // Menggunakan file audio lokal ulangtahun.mp3
                 audioSource.src = "ulangtahun.mp3";
                 audio.load();
+                btn.innerHTML = "🎵 Play Musik Spesial";
             }
         } 
-        // Hari Biasa
         else {
             if (currentEvent !== null) {
                 currentEvent = null;
                 document.body.className = '';
                 if (audio && !audio.paused) {
                     audio.pause();
-                    document.getElementById("music-btn").innerHTML = "🎵 Play Musik Spesial";
                 }
+                btn.innerHTML = "🎵 Play Musik Spesial";
             }
         }
     }
@@ -287,25 +289,21 @@
         const month = now.getMonth();
         const date = now.getDate();
 
-        // 28 Januari - Ucapan Ulang Tahun Spesial
         if (month === 0 && date === 28) {
             document.getElementById("daily-quote").innerText = `"selamat ulang tahun yaaa dee, aa ngetik ucapan ini dari jauh-jauh hari, tepatnya Jumat, 14 Agustus 2026, jauh sebelum 28 Januari 2027 datang. Dan sekarang akhirnya hari yang aa tunggu ini tiba, Dee bertambah usia lagi. Semoga di umur yang baru ini Dee selalu diberikan kesehatan, kebahagiaan, rezeki yang lancar, dimudahkan dalam segala urusan, dan dikelilingi orang-orang yang tulus. Aa nggak tahu satu tahun terakhir Dee lewati dengan cerita seperti apa, tapi aa harap semua yang berat bisa menjadi pelajaran dan semua hal baik bisa terus bertambah. Semoga apa yang Dee semogakan dan perjuangkan selama ini satu per satu bisa terwujud di waktu yang paling tepat. Jangan terlalu keras sama diri sendiri ya, Dee, pelan-pelan aja dan nikmati setiap prosesnya. Aa bangga sama Dee yang sudah sampai sejauh ini. Sekali lagi, selamat ulang tahun, Dee. Panjang umur, sehat selalu, bahagia terus, dan semoga 28 Januari 2027 ini menjadi awal dari banyak hal baik dalam hidup dee"`;
             return;
         }
 
-        // 17 Agustus - Ucapan Kemerdekaan
         if (month === 7 && date === 17) {
             document.getElementById("daily-quote").innerText = `"Selamat Hari Kemerdekaan RI ke-81! de semangat yaa hari ini, semoga makin semangat meraih semua mimpi-mimpinya!"`;
             return;
         }
 
-        // Jika hari Sabtu (6) atau Minggu (0)
         if (dayIdx === 0 || dayIdx === 6) {
             document.getElementById("daily-quote").innerText = `"hari ini de libur, istirahat yaa kabarin kalo kemana mana dan jangan lupa chat a"`;
             return;
         }
 
-        // Hari Biasa (Senin - Jumat) reset acak tiap jam 04.00 WIB
         const adjustedDate = new Date(now.getTime() - (4 * 60 * 60 * 1000));
         const year = adjustedDate.getFullYear();
         const monthAdj = adjustedDate.getMonth();
@@ -355,7 +353,7 @@
                 if (currentMins >= startMins) {
                     type = "off";
                     activeIndex = i;
-}
+                }
             } else if (currentMins >= startMins && currentMins < endMins) {
                 type = item.type;
                 activeIndex = i;
