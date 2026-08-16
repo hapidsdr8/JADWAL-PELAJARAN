@@ -3,384 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Pelajaran Sekolah</title>
+    <title>Jadwal Pelajaran - SYSTEM ERROR</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; padding: 20px 15px; transition: all 0.5s ease; }
-        .container { width: 100%; max-width: 480px; background: #1e293b; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); border: 1px solid #334155; position: relative; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', monospace; }
+        body { background-color: #050505; color: #ff3333; display: flex; justify-content: center; min-height: 100vh; padding: 20px 15px; }
         
-        /* Header Default (Biru) */
-        .header { background: linear-gradient(135deg, #0284c7, #0369a1); padding: 25px 20px 10px 20px; position: relative; text-align: center; transition: all 0.5s ease; }
-        .header h1 { font-size: 1.5rem; letter-spacing: 1px; color: #ffffff; margin-bottom: 5px; text-transform: uppercase; }
-        
-        /* Banner Khusus (17 Agt & 28 Jan) */
-        .event-banner { display: none; background: #ffffff; color: #0284c7; font-weight: 800; font-size: 0.95rem; padding: 6px 12px; border-radius: 20px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
-        
-        /* Pemutar Musik */
-        .music-player { display: none; margin-top: 8px; margin-bottom: 12px; }
-        .music-btn { background: #ffffff; color: #0284c7; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: all 0.2s ease; }
-        .music-btn:hover { opacity: 0.9; transform: scale(1.05); }
+        .container { 
+            width: 100%; max-width: 480px; background: #110000; border-radius: 20px; 
+            overflow: hidden; box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); border: 2px solid #ff0000; position: relative;
+        }
 
-        .datetime-box { font-size: 0.9rem; color: #e0f2fe; margin-bottom: 12px; }
-        .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.85); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .header { background: #330000; padding: 25px 20px; text-align: center; border-bottom: 2px solid #ff0000; }
+        .header h1 { font-size: 1.4rem; color: #ff0000; text-transform: uppercase; letter-spacing: 2px; }
         
-        .status-yellow { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
-        .status-green  { background-color: #22c55e; box-shadow: 0 0 8px #22c55e; }
-        .status-white  { background-color: #f8fafc; box-shadow: 0 0 8px #f8fafc; }
-        .status-red    { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        
-        .wave-svg { display: block; width: 100%; height: 40px; }
-        .wave-svg path { fill: #0369a1; transition: all 0.5s ease; }
+        .error-banner { 
+            background: #ff0000; color: #000; font-weight: 900; font-size: 0.9rem; 
+            padding: 8px; border-radius: 5px; margin-bottom: 10px; animation: blink 0.4s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .datetime-box { font-size: 0.85rem; color: #ff9999; margin-bottom: 10px; }
+        .status-badge { background: #000; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #ff0000; color: #ff0000; }
         
         .content { padding: 20px; }
+        .section-box { background: #1a0000; border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px dashed #ff0000; }
+        .section-title { font-size: 0.8rem; color: #ff6666; margin-bottom: 8px; font-weight: bold; }
         
-        /* Tampilan Default (Biru) */
-        .section-box { background: #0f172a; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid #38bdf8; transition: all 0.5s ease; }
-        .section-title { font-size: 0.85rem; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 700; transition: all 0.5s ease; }
+        .summary-list { list-style: none; display: flex; gap: 8px; flex-wrap: wrap; }
+        .summary-item { background: #330000; color: #ffaaaa; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #ff0000; }
         
-        .summary-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
-        .summary-item { background: #1e293b; color: #e2e8f0; padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; border: 1px solid #334155; font-weight: 600; }
         .timeline { display: flex; flex-direction: column; gap: 10px; }
-        .timeline-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 10px; border: 1px solid #1e293b; transition: all 0.2s ease; }
-        .timeline-item.active { border-color: #38bdf8; background: #16243d; transition: all 0.5s ease; }
-        .time-text { font-size: 0.85rem; color: #38bdf8; font-weight: 600; width: 105px; flex-shrink: 0; transition: all 0.5s ease; }
-        .subject-text { font-size: 0.9rem; color: #f1f5f9; flex-grow: 1; text-align: right; }
+        .timeline-item { display: flex; justify-content: space-between; background: #1a0000; padding: 10px; border-radius: 6px; border-left: 3px solid #ff0000; }
         
-        .quote-box { margin-top: 25px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; border-radius: 15px; padding: 18px 20px; text-align: center; position: relative; }
-        .quote-box::before { content: "“"; font-size: 2.5rem; color: #38bdf8; opacity: 0.3; position: absolute; top: -5px; left: 15px; line-height: 1; transition: all 0.5s ease; }
-        .quote-text { font-size: 0.92rem; font-style: italic; color: #e0f2fe; line-height: 1.6; font-weight: 500; text-align: justify; }
-
-        /* Tema Merdeka (17 Agustus) */
-        .theme-merdeka .header { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-        .theme-merdeka .event-banner { display: inline-block; color: #b91c1c; }
-        .theme-merdeka .music-player { display: block; }
-        .theme-merdeka .music-btn { color: #b91c1c; }
-        .theme-merdeka .wave-svg path { fill: #b91c1c; }
-        .theme-merdeka .section-box { border-left: 4px solid #ef4444; }
-        .theme-merdeka .section-title { color: #ef4444; }
-        .theme-merdeka .timeline-item.active { border-color: #ef4444; background: #291717; }
-        .theme-merdeka .time-text { color: #ef4444; }
-        .theme-merdeka .quote-box::before { color: #ef4444; }
-
-        /* Tema Ulang Tahun (28 Januari) */
-        .theme-birthday .header { background: linear-gradient(135deg, #ec4899, #be185d); }
-        .theme-birthday .event-banner { display: inline-block; color: #be185d; }
-        .theme-birthday .music-player { display: block; }
-        .theme-birthday .music-btn { color: #be185d; }
-        .theme-birthday .wave-svg path { fill: #be185d; }
-        .theme-birthday .section-box { border-left: 4px solid #f472b6; }
-        .theme-birthday .section-title { color: #f472b6; }
-        .theme-birthday .timeline-item.active { border-color: #f472b6; background: #2b1120; }
-        .theme-birthday .time-text { color: #f472b6; }
-        .theme-birthday .quote-box::before { color: #f472b6; }
+        .glitch-text { text-decoration: line-through; opacity: 0.8; }
+        
+        .panic-btn { 
+            width: 100%; margin-top: 15px; padding: 12px; background: #ff0000; color: #000; 
+            font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+        }
+        .panic-btn:active { background: #ffffff; }
     </style>
 </head>
-<body>
+<body onclick="playErrorSound()">
 
-<div class="container" id="main-container">
+<div class="container">
     <div class="header">
-        <div class="event-banner" id="event-banner">🇮🇩 Selamat HUT RI Ke-81! 🇮🇩</div>
-        <h1>Jadwal Pelajaran</h1>
-        
-        <!-- Pemutar Musik Dinamis -->
-        <div class="music-player">
-            <button class="music-btn" id="music-btn" onclick="toggleMusic()">🎵 Play Musik Spesial</button>
-            <audio id="bg-music" loop>
-                <source id="music-source" src="" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="datetime-box" id="datetime-display">---, -- -------- ---- | --:--:-- WIB</div>
-        <div class="status-badge">
-            <span class="status-dot" id="status-dot"></span>
-            <span id="status-text">Memuat status...</span>
-        </div>
+        <div class="error-banner">⚠️ FATAL ERROR: DATABASE CORRUPTED ⚠️</div>
+        <h1>J4dW4L P3L4J4R4N [ERR_500]</h1>
+        <div class="datetime-box">SYSTEM TIME: NULL / OVERFLOW</div>
+        <div class="status-badge">STATUS: KRNL_PANIC_0x889</div>
     </div>
-    <svg class="wave-svg" viewBox="0 0 500 150" preserveAspectRatio="none">
-        <path d="M0.00,49.98 C150.00,150.00 349.20,-49.98 500.00,49.98 L500.00,0.00 L0.00,0.00 Z"></path>
-    </svg>
 
     <div class="content">
         <div class="section-box">
-            <div class="section-title" id="summary-title">MATA PELAJARAN HARI INI</div>
-            <ul class="summary-list" id="summary-list"></ul>
+            <div class="section-title">MATA PELAJARAN (DATA UNREADABLE)</div>
+            <ul class="summary-list">
+                <li class="summary-item glitch-text">MTK_NULL</li>
+                <li class="summary-item glitch-text">IPA_ERR</li>
+                <li class="summary-item glitch-text">B.INDO_CORRUPT</li>
+            </ul>
         </div>
 
-        <div class="section-title" style="margin-bottom: 10px;">RINCIAN WAKTU</div>
-        <div class="timeline" id="timeline-list"></div>
-
-        <div class="quote-box">
-            <p class="quote-text" id="daily-quote">Memuat kata-kata...</p>
+        <div class="section-title">RINCIAN WAKTU (OVERWRITTEN)</div>
+        <div class="timeline">
+            <div class="timeline-item"><span>00:00 - 00:00</span><span class="glitch-text">#ERROR_STACK_OVERFLOW</span></div>
+            <div class="timeline-item"><span>99:99 - 99:99</span><span class="glitch-text">SYSTEM_FAIL_PROC</span></div>
+            <div class="timeline-item"><span>??:?? - ??:??</span><span class="glitch-text">MEM_LEAK_DETECTED</span></div>
+            <div class="timeline-item"><span>06:30 - 14:00</span><span class="glitch-text">DELETING_ALL_FILES...</span></div>
         </div>
+
+        <button class="panic-btn" onclick="triggerAlert(event)">PERBAIKI SYSTEM (RECOVER)</button>
     </div>
 </div>
+
 <script>
-    const scheduleData = {
-        1: {
-            summary: ["MTK", "PAI", "IPA"],
-            timeline: [
-                { start: "06:30", end: "07:20", label: "Persiapan KBM", type: "prep" },
-                { start: "07:20", end: "09:40", label: "Mapel ke 1 MTK", type: "class" },
-                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
-                { start: "10:00", end: "11:20", label: "Mapel ke 2 PAI", type: "class" },
-                { start: "11:20", end: "12:00", label: "Mapel ke 3 IPA", type: "class" },
-                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
-                { start: "12:40", end: "14:00", label: "Mapel ke 3 (Lanjutan) IPA", type: "class" },
-                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
-            ]
-        },
-        2: {
-            summary: ["B. Inggris", "PPKn", "IPS"],
-            timeline: [
-                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
-                { start: "07:40", end: "09:00", label: "Mapel ke 1 B. Inggris", type: "class" },
-                { start: "09:00", end: "09:40", label: "Mapel ke 2 PPKn", type: "class" },
-                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
-                { start: "10:00", end: "10:40", label: "Mapel ke 3 PPKn", type: "class" },
-                { start: "10:40", end: "12:00", label: "Mapel ke 4 IPS", type: "class" },
-                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
-                { start: "12:40", end: "14:00", label: "Mapel ke 4 (Lanjutan) IPS", type: "class" },
-                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
-            ]
-        },
-        3: {
-            summary: ["PJOK", "IPA", "B. Indo"],
-            timeline: [
-                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
-                { start: "07:40", end: "09:00", label: "Mapel ke 1 PJOK", type: "class" },
-                { start: "09:00", end: "09:40", label: "Mapel ke 2 IPA", type: "class" },
-                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
-                { start: "10:00", end: "11:20", label: "Mapel ke 3 IPA", type: "class" },
-                { start: "11:20", end: "12:00", label: "Mapel ke 4 B. Indo", type: "class" },
-                { start: "12:00", end: "12:40", label: "Istirahat", type: "break" },
-                { start: "12:40", end: "14:00", label: "Mapel ke 4 (Lanjutan) B. Indo", type: "class" },
-                { start: "14:00", end: null, label: "Pulang / Selesai", type: "off" }
-            ]
-        },
-        4: {
-            summary: ["Prakarya", "IPS"],
-            timeline: [
-                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
-                { start: "07:40", end: "09:00", label: "Mapel ke 1 Prakarya", type: "class" },
-                { start: "09:00", end: "09:40", label: "Mapel ke 2 IPS", type: "class" },
-                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
-                { start: "10:00", end: "12:00", label: "Mapel ke 3 IPS", type: "class" },
-                { start: "12:00", end: null, label: "Pulang / Selesai", type: "off" }
-            ]
-        },
-        5: {
-            summary: ["TIK", "B. Sunda"],
-            timeline: [
-                { start: "06:30", end: "07:40", label: "Persiapan KBM", type: "prep" },
-                { start: "07:40", end: "09:00", label: "Mapel ke 1 TIK", type: "class" },
-                { start: "09:00", end: "09:40", label: "Mapel ke 2 B. Sunda", type: "class" },
-                { start: "09:40", end: "10:00", label: "Istirahat", type: "break" },
-                { start: "10:00", end: "10:40", label: "Mapel ke 3 B. Sunda", type: "class" },
-                { start: "10:40", end: "11:30", label: "Persiapan Sholat Jum'at", type: "prep" },
-                { start: "11:30", end: "12:30", label: "Sholat Jum'at", type: "break" },
-                { start: "13:00", end: null, label: "Pulang / Selesai", type: "off" }
-            ]
-        }
-    };
-
-    const quotesList = [
-        "de semangat yaa buat hari ini",
-        "jalanin aja dulu, ga usah kebanyakan mikir",
-        "jangan biarin hal kecil ngerusak mood de",
-        "hari ini harus lebih happy yaa",
-        "jangan lupa nikmatin waktu de di sekolah",
-        "kalo ada yang bikin kesel, cuekin aja",
-        "ga semua hal harus de pikirin",
-        "jangan takut sama apa yang belum terjadi",
-        "de harus percaya sama diri sendiri",
-        "jangan ngerasa sendirian yaa",
-        "a bakal selalu support de",
-        "apa pun yang terjadi, jangan langsung nyalahin diri sendiri",
-        "de udah ngelakuin yang terbaik",
-        "jangan lupa kasih waktu buat diri de sendiri",
-        "semoga hari ini ketemu banyak hal seru",
-        "semoga ada banyak alasan buat de senyum",
-        "semoga pelajaran hari ini gampang dipahami",
-        "semoga ga ada drama-drama wkwk",
-        "pokoknya hari ini harus happy",
-        "jangan lupa kabarin a kalo udah pulang",
-        "jaga diri baik-baik yaa",
-        "jangan lupa makan walaupun lagi sibuk",
-        "semoga semua urusan de hari ini lancar",
-        "jangan kebanyakan mikirin omongan orang",
-        "de punya jalan de sendiri",
-        "ga perlu buru-buru buat jadi yang terbaik",
-        "nikmatin prosesnya aja",
-        "pelan-pelan tapi pasti",
-        "yang penting de tetep jadi diri de sendiri",
-        "semangat yaa bocil kesayangan a wkwk"
-    ];
-
-    let currentEvent = null;
-
-    function toggleMusic() {
-        const audio = document.getElementById("bg-music");
-        const btn = document.getElementById("music-btn");
-        
-        if (audio.paused) {
-            audio.play().then(() => {
-                btn.innerHTML = "⏸️ Pause Musik Spesial";
-            }).catch(err => {
-                console.log("Autoplay dicegah oleh browser:", err);
-            });
-        } else {
-            audio.pause();
-            btn.innerHTML = "🎵 Play Musik Spesial";
-        }
+    // Suara Beep Error otomatis saat layar diklik
+    function playErrorSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, ctx.currentTime); 
+            osc.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.1);
+        } catch(e){}
     }
 
-    function timeToMinutes(t) {
-        if (!t) return 0;
-        const [h, m] = t.split(":").map(Number);
-        return h * 60 + m;
+    // Alert pas tombol recovery diklik
+    function triggerAlert(e) {
+        e.stopPropagation();
+        alert("a mrh sma de");
     }
-
-    function checkTheme() {
-        const now = new Date();
-        const month = now.getMonth();
-        const date = now.getDate();
-        
-        const audio = document.getElementById("bg-music");
-        const audioSource = document.getElementById("music-source");
-        const banner = document.getElementById("event-banner");
-        const btn = document.getElementById("music-btn");
-
-        if (month === 7 && date === 17) {
-            if (currentEvent !== "merdeka") {
-                currentEvent = "merdeka";
-                document.body.className = 'theme-merdeka';
-                banner.innerText = "🇮🇩 Selamat HUT RI Ke-81! 🇮🇩";
-                audioSource.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/Indonesia_Raya_instrumental.ogg";
-                audio.load();
-                btn.innerHTML = "🎵 Play Musik Spesial";
-            }
-        } 
-        else if (month === 0 && date === 28) {
-            if (currentEvent !== "birthday") {
-                currentEvent = "birthday";
-                document.body.className = 'theme-birthday';
-                banner.innerText = "🎂 Happy Birthday Dee! 🎉";
-                audioSource.src = "ulangtahun.mp3";
-                audio.load();
-                btn.innerHTML = "🎵 Play Musik Spesial";
-            }
-        } 
-        else {
-            if (currentEvent !== null) {
-                currentEvent = null;
-                document.body.className = '';
-                if (audio && !audio.paused) {
-                    audio.pause();
-                }
-                btn.innerHTML = "🎵 Play Musik Spesial";
-            }
-        }
-    }
-
-    function updateQuote() {
-        const now = new Date();
-        const dayIdx = now.getDay();
-        const month = now.getMonth();
-        const date = now.getDate();
-
-        if (month === 0 && date === 28) {
-            document.getElementById("daily-quote").innerText = `"selamat ulang tahun yaaa dee, aa ngetik ucapan ini dari jauh-jauh hari, tepatnya Jumat, 14 Agustus 2026, jauh sebelum 28 Januari 2027 datang. Dan sekarang akhirnya hari yang aa tunggu ini tiba, Dee bertambah usia lagi. Semoga di umur yang baru ini Dee selalu diberikan kesehatan, kebahagiaan, rezeki yang lancar, dimudahkan dalam segala urusan, dan dikelilingi orang-orang yang tulus. Aa nggak tahu satu tahun terakhir Dee lewati dengan cerita seperti apa, tapi aa harap semua yang berat bisa menjadi pelajaran dan semua hal baik bisa terus bertambah. Semoga apa yang Dee semogakan dan perjuangkan selama ini satu per satu bisa terwujud di waktu yang paling tepat. Jangan terlalu keras sama diri sendiri ya, Dee, pelan-pelan aja dan nikmati setiap prosesnya. Aa bangga sama Dee yang sudah sampai sejauh ini. Sekali lagi, selamat ulang tahun, Dee. Panjang umur, sehat selalu, bahagia terus, dan semoga 28 Januari 2027 ini menjadi awal dari banyak hal baik dalam hidup dee"`;
-            return;
-        }
-
-        if (month === 7 && date === 17) {
-            document.getElementById("daily-quote").innerText = `"Selamat Hari Kemerdekaan RI ke-81! de semangat yaa hari ini, semoga makin semangat meraih semua mimpi-mimpinya!"`;
-            return;
-        }
-
-        if (dayIdx === 0 || dayIdx === 6) {
-            document.getElementById("daily-quote").innerText = `"hari ini de libur, istirahat yaa kabarin kalo kemana mana dan jangan lupa chat a"`;
-            return;
-        }
-
-        const adjustedDate = new Date(now.getTime() - (4 * 60 * 60 * 1000));
-        const year = adjustedDate.getFullYear();
-        const monthAdj = adjustedDate.getMonth();
-        const dateAdj = adjustedDate.getDate();
-
-        let seed = year * 10000 + (monthAdj + 1) * 100 + dateAdj;
-        let x = Math.sin(seed++) * 10000;
-        let randomIndex = Math.floor((x - Math.floor(x)) * quotesList.length);
-
-        document.getElementById("daily-quote").innerText = `"${quotesList[randomIndex]}"`;
-    }
-
-    function updateDashboard() {
-        const now = new Date();
-        const dayIdx = now.getDay();
-        const currentMins = now.getHours() * 60 + now.getMinutes();
-
-        const daysName = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        const monthsName = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-        document.getElementById("datetime-display").innerText = `${daysName[dayIdx]}, ${now.getDate()} ${monthsName[now.getMonth()]} ${now.getFullYear()} | ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} WIB`;
-
-        checkTheme();
-        updateQuote();
-
-        if (dayIdx === 0 || dayIdx === 6 || !scheduleData[dayIdx]) {
-            document.getElementById("status-dot").className = "status-dot status-red";
-            document.getElementById("status-text").innerText = "Libur / Off";
-            document.getElementById("summary-title").innerText = `MATA PELAJARAN HARI INI (${daysName[dayIdx].toUpperCase()})`;
-            document.getElementById("summary-list").innerHTML = "<li class='summary-item'>Tidak Ada Kegiatan KBM</li>";
-            document.getElementById("timeline-list").innerHTML = "<div style='text-align:center; padding:20px 0; color:#64748b; font-size:0.9rem;'>☕ Hari ini libur, selamat beristirahat!</div>";
-            return;
-        }
-
-        const today = scheduleData[dayIdx];
-        document.getElementById("summary-title").innerText = `MATA PELAJARAN HARI INI (${daysName[dayIdx].toUpperCase()})`;
-        document.getElementById("summary-list").innerHTML = today.summary.map(item => `<li class="summary-item">${item}</li>`).join("");
-
-        let activeIndex = -1;
-        let type = "off";
-
-        today.timeline.forEach((item, i) => {
-            const startMins = timeToMinutes(item.start);
-            const endMins = timeToMinutes(item.end);
-
-            if (item.type === "off") {
-                if (currentMins >= startMins) {
-                    type = "off";
-                    activeIndex = i;
-                }
-            } else if (currentMins >= startMins && currentMins < endMins) {
-                type = item.type;
-                activeIndex = i;
-            }
-        });
-
-        const statusMap = {
-            prep: ["status-yellow", "Persiapan KBM"],
-            class: ["status-green", "Aktif Belajar"],
-            break: ["status-white", "Jam Istirahat"],
-            off: ["status-red", "Pulang / Selesai"]
-        };
-
-        const [cls, txt] = statusMap[type] || statusMap["off"];
-        document.getElementById("status-dot").className = `status-dot ${cls}`;
-        document.getElementById("status-text").innerText = txt;
-
-        document.getElementById("timeline-list").innerHTML = today.timeline.map((item, i) => `
-            <div class="timeline-item ${i === activeIndex ? "active" : ""}">
-                <span class="time-text">${item.end ? item.start + " - " + item.end : item.start}</span>
-                <span class="subject-text">${item.label}</span>
-            </div>
-        `).join("");
-    }
-
-    updateDashboard();
-    setInterval(updateDashboard, 1000);
 </script>
 
 </body>
