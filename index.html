@@ -3,73 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Pelajaran Sekolah - Preview Ulang Tahun</title>
+    <title>Jadwal Pelajaran Sekolah</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; padding: 20px 15px; transition: all 0.5s ease; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; padding: 20px 15px; }
         .container { width: 100%; max-width: 480px; background: #1e293b; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); border: 1px solid #334155; position: relative; }
         
-        /* Tema Ulang Tahun (Pink / Pink Magenta Accent) */
-        .header { background: linear-gradient(135deg, #ec4899, #be185d); padding: 25px 20px 10px 20px; position: relative; text-align: center; transition: all 0.5s ease; }
-        .header h1 { font-size: 1.5rem; letter-spacing: 1px; color: #ffffff; margin-bottom: 5px; text-transform: uppercase; }
+        .header { background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 25px 20px 15px 20px; text-align: center; }
+        .header h1 { font-size: 1.5rem; letter-spacing: 1px; color: #ffffff; margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
         
-        /* Banner Ulang Tahun */
-        .event-banner { display: inline-block; background: #ffffff; color: #be185d; font-weight: 800; font-size: 0.95rem; padding: 6px 12px; border-radius: 20px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
-        
-        /* Pemutar Musik */
-        .music-player { display: block; margin-top: 8px; margin-bottom: 12px; }
-        .music-btn { background: #ffffff; color: #be185d; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: all 0.2s ease; }
-        .music-btn:hover { opacity: 0.9; transform: scale(1.05); }
-
-        .datetime-box { font-size: 0.9rem; color: #fce7f3; margin-bottom: 12px; }
+        .datetime-box { font-size: 0.9rem; color: #dbeafe; margin-bottom: 12px; }
         .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.85); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.1); }
         .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
         
-        .status-yellow { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
-        .status-green  { background-color: #22c55e; box-shadow: 0 0 8px #22c55e; }
-        .status-white  { background-color: #f8fafc; box-shadow: 0 0 8px #f8fafc; }
-        .status-red    { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
+        .status-green { background-color: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .status-red { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
         
-        .wave-svg { display: block; width: 100%; height: 40px; }
-        .wave-svg path { fill: #be185d; transition: all 0.5s ease; }
+        .wave-svg { display: block; width: 100%; height: 35px; }
+        .wave-svg path { fill: #1d4ed8; }
         
         .content { padding: 20px; }
         
-        .section-box { background: #0f172a; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid #f472b6; transition: all 0.5s ease; }
-        .section-title { font-size: 0.85rem; text-transform: uppercase; color: #f472b6; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 700; transition: all 0.5s ease; }
+        .section-box { background: #0f172a; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid #3b82f6; }
+        .section-title { font-size: 0.85rem; text-transform: uppercase; color: #60a5fa; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 700; }
         
         .summary-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
         .summary-item { background: #1e293b; color: #e2e8f0; padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; border: 1px solid #334155; font-weight: 600; }
-        .timeline { display: flex; flex-direction: column; gap: 10px; }
-        .timeline-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 10px; border: 1px solid #1e293b; transition: all 0.2s ease; }
-        .timeline-item.active { border-color: #f472b6; background: #2b1120; transition: all 0.5s ease; }
-        .time-text { font-size: 0.85rem; color: #f472b6; font-weight: 600; width: 105px; flex-shrink: 0; transition: all 0.5s ease; }
-        .subject-text { font-size: 0.9rem; color: #f1f5f9; flex-grow: 1; text-align: right; }
         
-        .quote-box { margin-top: 25px; background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; border-radius: 15px; padding: 18px 20px; text-align: center; position: relative; }
-        .quote-box::before { content: "“"; font-size: 2.5rem; color: #f472b6; opacity: 0.4; position: absolute; top: -5px; left: 15px; line-height: 1; transition: all 0.5s ease; }
-        .quote-text { font-size: 0.92rem; font-style: italic; color: #fce7f3; line-height: 1.6; font-weight: 500; text-align: justify; }
+        .timeline { display: flex; flex-direction: column; gap: 10px; }
+        .timeline-item { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 12px 15px; border-radius: 10px; border: 1px solid #1e293b; }
+        .time-text { font-size: 0.85rem; color: #60a5fa; font-weight: 600; width: 105px; flex-shrink: 0; }
+        .subject-text { font-size: 0.9rem; color: #f1f5f9; flex-grow: 1; text-align: right; }
+
+        .quote-box { margin-top: 25px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 15px; text-align: center; }
+        .quote-text { font-size: 0.85rem; color: #cbd5e1; font-style: italic; line-height: 1.6; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <div class="event-banner">🎂 Happy Birthday Dee! 🎉</div>
         <h1>Jadwal Pelajaran</h1>
-        
-        <!-- Pemutar Musik -->
-        <div class="music-player">
-            <button class="music-btn" id="music-btn" onclick="toggleMusic()">🎵 Play Musik Spesial</button>
-            <audio id="bg-music" loop>
-                <source src="ulangtahun.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="datetime-box" id="datetime-display">Rabu, 28 Januari 2027 | 08:00:00 WIB</div>
+        <div class="datetime-box" id="datetime-display">Memuat tanggal...</div>
         <div class="status-badge">
-            <span class="status-dot status-green"></span>
-            <span>Aktif Belajar</span>
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Memuat status...</span>
         </div>
     </div>
     <svg class="wave-svg" viewBox="0 0 500 150" preserveAspectRatio="none">
@@ -77,55 +55,128 @@
     </svg>
 
     <div class="content">
-        <div class="section-box">
-            <div class="section-title">MATA PELAJARAN HARI INI (RABU)</div>
-            <ul class="summary-list">
-                <li class="summary-item">PJOK</li>
-                <li class="summary-item">IPA</li>
-                <li class="summary-item">B. Indo</li>
-            </ul>
+        <div class="section-box" id="summary-section">
+            <div class="section-title">MATA PELAJARAN HARI INI</div>
+            <ul class="summary-list" id="summary-list"></ul>
         </div>
 
-        <div class="section-title" style="margin-bottom: 10px;">RINCIAN WAKTU</div>
-        <div class="timeline">
-            <div class="timeline-item"><span class="time-text">06:30 - 07:40</span><span class="subject-text">Persiapan KBM</span></div>
-            <div class="timeline-item active"><span class="time-text">07:40 - 09:00</span><span class="subject-text">Mapel ke 1 PJOK</span></div>
-            <div class="timeline-item"><span class="time-text">09:00 - 09:40</span><span class="subject-text">Mapel ke 2 IPA</span></div>
-            <div class="timeline-item"><span class="time-text">09:40 - 10:00</span><span class="subject-text">Istirahat</span></div>
-            <div class="timeline-item"><span class="time-text">10:00 - 11:20</span><span class="subject-text">Mapel ke 3 IPA</span></div>
-            <div class="timeline-item"><span class="time-text">11:20 - 12:00</span><span class="subject-text">Mapel ke 4 B. Indo</span></div>
-            <div class="timeline-item"><span class="time-text">12:00 - 12:40</span><span class="subject-text">Istirahat</span></div>
-            <div class="timeline-item"><span class="time-text">12:40 - 14:00</span><span class="subject-text">Mapel ke 4 (Lanjutan) B. Indo</span></div>
-            <div class="timeline-item"><span class="time-text">14:00</span><span class="subject-text">Pulang / Selesai</span></div>
-        </div>
+        <div class="section-title" id="timeline-title" style="margin-bottom: 10px;">RINCIAN WAKTU</div>
+        <div class="timeline" id="timeline-container"></div>
 
         <div class="quote-box">
-            <p class="quote-text" id="daily-quote"></p>
+            <p class="quote-text" id="daily-quote">Memuat kata-kata...</p>
         </div>
     </div>
 </div>
 
     <script>
-    // Teks ucapan ulang tahun khusus 28 Januari
-    const birthdayQuote = `"selamat ulang tahun yaaa dee, aa ngetik ucapan ini dari jauh-jauh hari, tepatnya Jumat, 14 Agustus 2026, jauh sebelum 28 Januari 2027 datang. Dan sekarang akhirnya hari yang aa tunggu ini tiba, Dee bertambah usia lagi. Semoga di umur yang baru ini Dee selalu diberikan kesehatan, kebahagiaan, rezeki yang lancar, dimudahkan dalam segala urusan, dan dikelilingi orang-orang yang tulus. Aa nggak tahu satu tahun terakhir Dee lewati dengan cerita seperti apa, tapi aa harap semua yang berat bisa menjadi pelajaran dan semua hal baik bisa terus bertambah. Semoga apa yang Dee semogakan dan perjuangkan selama ini satu per satu bisa terwujud di waktu yang paling tepat. Jangan terlalu keras sama diri sendiri ya, Dee, pelan-pelan aja dan nikmati setiap prosesnya. Aa bangga sama Dee yang sudah sampai sejauh ini. Sekali lagi, selamat ulang tahun, Dee. Panjang umur, sehat selalu, bahagia terus, dan semoga 28 Januari 2027 ini menjadi awal dari banyak hal baik dalam hidup dee"`;
+    const quotes = [
+        "semangat yaa dee hari ini, kalo ada apa apa cerita sama aa yaa 🤍",
+        "semangat sekolahnya yaa dee, jangan lupa nikmatin harinya juga",
+        "dee jangan lupa makan yaa, jangan sampe sibuk terus sampe lupa sama diri sendiri",
+        "kalo hari ini kerasa cape, istirahat bentar yaa dee, ga harus selalu kuat setiap saat",
+        "dee jangan ovt terus yaa, yang belum tentu terjadi jangan dipikirin sekarang",
+        "kalo ada yang bikin dee sedih, cerita sama aa yaa, jangan dipendem sendirian",
+        "semoga hari ini semua urusan dee dilancarin yaa",
+        "jangan terlalu mikirin omongan orang yaa dee, ga semua omongan harus dee masukin hati",
+        "hari ini senyum yang banyak yaa dee, jangan sampe ada yang bikin mood dee rusak",
+        "semangat yaa dee, pelan pelan gapapa yang penting terus maju",
+        "dee jangan lupa istirahat yaa, badan juga butuh waktu buat tenang",
+        "kalo hari ini ada yang bikin dee kesel, jangan dipikirin terlalu lama yaa",
+        "semoga hari ini dee ketemu banyak hal baik yaa",
+        "dee jangan ngerasa sendirian yaa, kalo butuh tempat cerita ada aa",
+        "jangan takut gagal yaa dee, namanya juga proses, yang penting dee udah berusaha",
+        "semangat terus yaa dee, aa percaya dee bisa lewatin hari ini",
+        "kalo ada masalah jangan langsung nyalahin diri sendiri yaa dee",
+        "dee boleh cape, boleh sedih, tapi jangan nyerah yaa",
+        "semoga hari ini hati dee lebih tenang dan pikiran dee lebih ringan",
+        "jangan lupa senyum yaa dee, senyum dee jangan sampe kalah sama masalah",
+        "dee ga harus sempurna setiap hari kok, cukup jadi versi dee yang terus berusaha",
+        "semangat yaa dee, satu satu aja masalahnya, ga perlu dipikirin semuanya sekaligus",
+        "kalo hari ini ga sesuai harapan, gapapa, besok masih ada kesempatan lagi",
+        "jangan terlalu keras sama diri sendiri yaa dee, dee juga manusia yang butuh istirahat",
+        "semoga hari ini ga ada yang bikin dee kepikiran sampe malem",
+        "dee kalo lagi bingung jangan dipendem sendiri, cerita aja sama aa",
+        "jaga diri baik baik yaa dee, jangan lupa minum dan makan",
+        "semoga sekolah hari ini seru yaa dee, jangan lupa nikmatin momen kecilnya",
+        "dee jangan bandingin diri dee sama orang lain yaa, setiap orang punya waktunya masing masing",
+        "semangat yaa dee, aa selalu dukung dee dari sini 🤍",
+        "hari ini harus lebih kuat yaa dee, tapi kalo cape gapapa istirahat",
+        "jangan takut cerita sama aa yaa dee, aa ga bakal bosen dengerin cerita dee",
+        "semoga apa yang dee usahain hari ini ada hasil baiknya nanti",
+        "dee jangan terlalu banyak mikir sebelum tidur yaa, istirahatin pikiran dee",
+        "semoga hari dee dipenuhi hal hal kecil yang bikin dee senyum",
+        "semangat yaa dee, jangan lupa kalo dee udah sejauh ini dan itu ga gampang",
+        "apa pun yang terjadi hari ini, jangan lupa pulang dengan hati yang tenang yaa dee",
+        "dee harus percaya sama diri sendiri yaa, dee lebih kuat dari yang dee kira",
+        "semoga hari ini lebih ringan dari yang dee bayangin",
+        "jangan lupa kabarin aa yaa dee kalo ada apa apa, aa siap dengerin",
+        "semangat yaa dee, jalanin aja hari ini pelan pelan, nanti juga selesai 🤍"
+    ];
 
-    document.getElementById("daily-quote").innerText = birthdayQuote;
+    const holidayQuote = "hari ini de libur, istirahat yaa kabarin kalo kemana mana dan jangan lupa chat a";
 
-    function toggleMusic() {
-        const audio = document.getElementById("bg-music");
-        const btn = document.getElementById("music-btn");
+    const scheduleData = {
+        1: { name: "Senin", subjects: ["Upacara", "MTK", "PAI", "IPA"], timeline: [ { time: "07:00 - 07:40", name: "Upacara Bendera" }, { time: "07:40 - 09:00", name: "Matematika" }, { time: "09:00 - 09:30", name: "Istirahat" }, { time: "09:30 - 11:00", name: "PAI" }, { time: "11:00 - 12:30", name: "IPA" } ] },
+        2: { name: "Selasa", subjects: ["PPKn", "Istirahat", "PPKn"], timeline: [ { time: "09:00 - 09:40", name: "PPKn (Sesi 1)" }, { time: "09:40 - 10:00", name: "Istirahat" }, { time: "10:00 - 10:40", name: "PPKn (Sesi 2)" } ] },
+        3: { name: "Rabu", subjects: ["B. Inggris", "IPS", "PJOK"], timeline: [ { time: "07:30 - 09:00", name: "Bahasa Inggris" }, { time: "09:00 - 09:30", name: "Istirahat" }, { time: "09:30 - 11:00", name: "IPS" }, { time: "11:00 - 12:30", name: "PJOK" } ] },
+        4: { name: "Kamis", subjects: ["B. Indonesia", "Prakarya", "TIK"], timeline: [ { time: "07:30 - 09:00", name: "Bahasa Indonesia" }, { time: "09:00 - 09:30", name: "Istirahat" }, { time: "09:30 - 11:00", name: "Prakarya" }, { time: "11:00 - 12:30", name: "TIK" } ] },
+        5: { name: "Jumat", subjects: ["B. Sunda", "Sholat Jumat"], timeline: [ { time: "07:30 - 09:00", name: "Bahasa Sunda" }, { time: "09:00 - 09:30", name: "Istirahat" }, { time: "11:30 - 12:30", name: "Persiapan Sholat Jumat" } ] }
+    };
+
+    function updateDashboard() {
+        const now = new Date();
+        const dayOfWeek = now.getDay();
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         
-        if (audio.paused) {
-            audio.play().then(() => {
-                btn.innerHTML = "⏸️ Pause Musik Spesial";
-            }).catch(err => {
-                alert("Simpan file ulangtahun.mp3 di folder yang sama untuk memutar musik!");
-            });
+        document.getElementById("datetime-display").innerText = `${days[dayOfWeek]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+        const isHoliday = (dayOfWeek === 0 || dayOfWeek === 6);
+
+        if (isHoliday) {
+            document.getElementById("status-dot").className = "status-dot status-red";
+            document.getElementById("status-text").innerText = "Libur Sekolah";
+            document.getElementById("summary-section").style.display = "none";
+            document.getElementById("timeline-title").style.display = "none";
+            document.getElementById("timeline-container").innerHTML = "<p style='text-align:center; color:#94a3b8; padding: 20px;'>Hari ini tidak ada kegiatan KBM.</p>";
+            document.getElementById("daily-quote").innerText = `"${holidayQuote}"`;
         } else {
-            audio.pause();
-            btn.innerHTML = "🎵 Play Musik Spesial";
+            document.getElementById("status-dot").className = "status-dot status-green";
+            document.getElementById("status-text").innerText = "KBM Berlangsung";
+            document.getElementById("summary-section").style.display = "block";
+            document.getElementById("timeline-title").style.display = "block";
+
+            const currentSchedule = scheduleData[dayOfWeek];
+            
+            const summaryList = document.getElementById("summary-list");
+            summaryList.innerHTML = "";
+            currentSchedule.subjects.forEach(sub => {
+                const li = document.createElement("li");
+                li.className = "summary-item";
+                li.innerText = sub;
+                summaryList.appendChild(li);
+            });
+
+            const timelineContainer = document.getElementById("timeline-container");
+            timelineContainer.innerHTML = "";
+            currentSchedule.timeline.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "timeline-item";
+                div.innerHTML = `<span class="time-text">${item.time}</span><span class="subject-text">${item.name}</span>`;
+                timelineContainer.appendChild(div);
+            });
+
+            // Rotasi kata-kata acak reset tiap jam 04:00 pagi
+            const shiftedDate = new Date(now.getTime() - (4 * 60 * 60 * 1000));
+            const daySeed = shiftedDate.getFullYear() * 10000 + (shiftedDate.getMonth() + 1) * 100 + shiftedDate.getDate();
+            const quoteIndex = daySeed % quotes.length;
+            
+            document.getElementById("daily-quote").innerText = `"${quotes[quoteIndex]}"`;
         }
     }
+
+    updateDashboard();
 </script>
 
 </body>
